@@ -3,46 +3,102 @@
 import { prisma } from "@/lib/prisma";
 import { signUpSchema, SignUpValues } from "@/lib/validation";
 import bcrypt from "bcryptjs";
+import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { redirect } from "next/navigation";
 
 export async function signUp(data: SignUpValues) {
-  const result = signUpSchema.safeParse(data);
-  if (result.success) {
-    const { name, email, password } = result.data;
+  try {
+    const result = signUpSchema.safeParse(data);
+    if (result.success) {
+      const { username, email, password } = result.data;
 
-    if (!name || !email || !password) {
-      return {
-        success: false,
-        message: "都是必填项",
-      };
-    }
+      const existUsername = await prisma.user.findUnique({
+        where: { username },
+      });
 
-    const existingUser = await prisma.user.findUnique({
-      where: { email },
-    });
-    if (existingUser) {
-      return {
-        success: false,
-        message: "该邮箱已被注册",
-      };
-    }
+      if (existUsername) {
+        return {
+          error: "该用户名已存在",
+        };
+      }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+      const existEmail = await prisma.user.findUnique({
+        where: { email },
+      });
+      if (existEmail) {
+        return {
+          error: "该邮箱已被注册",
+        };
+      }
 
-    try {
+      const hashedPassword = await bcrypt.hash(password, 10);
+
       await prisma.user.create({
         data: {
-          name,
+          username,
           email,
           password: hashedPassword,
         },
       });
-    } catch (error) {
-      console.error(error);
+
+      return redirect("/login");
+    }
+  } catch (error) {
+    if (isRedirectError(error)) throw error;
+    return {
+      error: "注册失败，请联系管理员.",
+    };
+  }
+}
+
+export async function getUser(name: string) {
+  try {
+    const userInfo = await prisma.user.findUnique({
+      where: {
+        username: name,
+      },
+    });
+
+    if (!userInfo || !userInfo.id) {
       return {
-        message: "Database Error: Failed to Create Invoice.",
+        userInfo: {},
+        error: "username not exist",
       };
     }
+    return {
+      userInfo: {
+        username: userInfo?.username,
+        email: userInfo?.email,
+        id: userInfo?.id,
+      },
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      userInfo: {},
+      error: "Something went wrong. Please try again.",
+    };
+  }
+}
+
+export async function resetPassword(id: string, password: string) {
+  try {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await prisma.user.update({
+      where: {
+        id,
+      },
+      data: {
+        password: hashedPassword,
+      },
+    });
+
     redirect("/login");
+  } catch (error) {
+    if (isRedirectError(error)) throw error;
+    console.error(error);
+    return {
+      error: "Something went wrong. Please try again.",
+    };
   }
 }

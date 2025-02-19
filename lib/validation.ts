@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const signUpSchema = z.object({
-  name: z.string().min(2, { message: "至少输入两个字符" }),
+  username: z.string().min(2, { message: "至少输入两个字符" }),
   email: z
     .string()
     .min(1, { message: "请填写 Email" })
@@ -12,10 +12,10 @@ export const signUpSchema = z.object({
 export type SignUpValues = z.infer<typeof signUpSchema>;
 
 export const loginSchema = z.object({
-  email: z
+  username: z
     .string()
-    .min(1, { message: "请填写 Email" })
-    .email({ message: "请填写正确的邮箱地址" }),
+    .min(1, { message: "请填写用户名" })
+    .min(2, "用户名最少设置 2 个字符"),
   password: z
     .string()
     .min(1, { message: "请填写密码" })

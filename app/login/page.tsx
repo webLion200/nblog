@@ -3,11 +3,13 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import login from "./actions";
+import Link from "next/link";
 
 export default function LoginPage() {
   const [errorMessage, formAction] = useActionState(login, undefined);
+  const [username, setUsername] = useState("");
 
   return (
     <div className="h-lvh flex justify-center items-center">
@@ -16,9 +18,11 @@ export default function LoginPage() {
         <CardContent className="mt-10">
           <form action={formAction} className="space-y-4">
             <Input
-              type="email"
-              name="email"
-              placeholder="请输入邮箱"
+              type="text"
+              name="username"
+              value={username}
+              onChange={(e) => setUsername(e?.target?.value)}
+              placeholder="请输入用户名"
               className="border p-2 w-full"
             />
             <Input
@@ -47,6 +51,14 @@ export default function LoginPage() {
               </>
             )}
           </div>
+          <Link
+            href={{
+              pathname: "/signup",
+              query: { username, type: "reset" },
+            }}
+          >
+            忘记密码？
+          </Link>
         </CardFooter>
       </Card>
     </div>
