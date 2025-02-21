@@ -5,8 +5,9 @@ import "./prosemirror.css";
 import { EditorContent, JSONContent, useEditor } from "@tiptap/react";
 import { useDebouncedCallback } from "use-debounce";
 import { Editor as EditorClass } from "@tiptap/core";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect } from "react";
 import { defaultExtensions } from "./extensions";
+import { defaultEditorProps } from "./props";
 import { ImageUp } from "lucide-react";
 interface IEditor {
   /**
@@ -37,6 +38,9 @@ export default function Editor({
 
   const editor = useEditor({
     extensions: defaultExtensions,
+    editorProps: {
+      ...defaultEditorProps,
+    },
     content: `
         <h1>This is a 1st level heading</h1>
         <h2>This is a 2nd level heading</h2>
@@ -90,16 +94,20 @@ export default function Editor({
       onClick={() => {
         editor?.chain().focus().run();
       }}
-      className="relative min-h-[500px] w-full max-w-screen-lg border-stone-200 bg-white sm:mb-[calc(20vh)] sm:rounded-lg sm:border sm:shadow-lg"
+      className="relative w-full border-stone-200 bg-white sm:mb-[calc(20vh)] sm:rounded-lg sm:border sm:shadow-lg"
     >
-      <div className="control-group">
-        <input
-          type="file"
-          accept="image/*"
-          name="image"
-          onChange={handleImageChange}
-          className="border p-2"
-        />
+      <div className="p-6 px-8 sm:px-12 flex justify-end">
+        <div className="relative">
+          <ImageUp size={32} className="cursor-pointer" />
+          <input
+            placeholder=""
+            type="file"
+            accept="image/*"
+            name="image"
+            onChange={handleImageChange}
+            className="cursor-pointer w-8 h-8 absolute top-0 opacity-0"
+          />
+        </div>
       </div>
       <EditorContent editor={editor} />
     </div>

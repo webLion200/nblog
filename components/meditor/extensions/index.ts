@@ -1,6 +1,14 @@
 import { Extensions } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import Image from "@tiptap/extension-image";
+import ImageResize from "tiptap-extension-resize-image";
+import Placeholder from "@tiptap/extension-placeholder";
+import SlashCommand from "./slash-command";
+import TextStyle from "@tiptap/extension-text-style";
+import TiptapUnderline from "@tiptap/extension-underline";
+import { Color } from "@tiptap/extension-color";
+import TaskItem from "@tiptap/extension-task-item";
+import Highlight from "@tiptap/extension-highlight";
+import TaskList from "@tiptap/extension-task-list";
 
 export const defaultExtensions: Extensions = [
   StarterKit.configure({
@@ -44,5 +52,45 @@ export const defaultExtensions: Extensions = [
     },
     gapcursor: false,
   }),
-  Image,
+  ImageResize,
+  SlashCommand,
+  TiptapUnderline,
+  TextStyle,
+  Color,
+  Highlight.configure({
+    multicolor: true,
+  }),
+  TaskList.configure({
+    HTMLAttributes: {
+      class: "not-prose pl-2",
+    },
+  }),
+  TaskItem.configure({
+    HTMLAttributes: {
+      class: "flex items-start my-4",
+    },
+    nested: true,
+  }),
+  // Markdown.configure({
+  //   html: false,
+  //   transformCopiedText: true,
+  // }),
+  Placeholder.configure({
+    placeholder: ({ node }) => {
+      const nodeName = node.type.name;
+      console.log("nodeName", nodeName);
+      if (nodeName === "heading") {
+        return `Heading ${node.attrs.level}`;
+      }
+      if (
+        nodeName === "bulletList" ||
+        nodeName === "orderedList" ||
+        nodeName === "listItem"
+      ) {
+        return "";
+      }
+      return "Press '/' for commands";
+    },
+    includeChildren: true,
+  }),
 ];
