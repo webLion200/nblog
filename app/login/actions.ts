@@ -1,6 +1,6 @@
 "use server";
 
-import { signIn } from "@/lib/auth";
+import { signIn, signOut } from "@/lib/auth";
 import { AuthError } from "next-auth";
 import { redirect } from "next/navigation";
 
@@ -39,4 +39,8 @@ export default async function login(
     }
     throw error;
   }
+}
+
+export async function logout() {
+  await signOut();
 }

@@ -4,6 +4,7 @@ import { prisma } from "./prisma";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import bcrypt from "bcryptjs";
 import { loginSchema } from "./validation";
+import { UserInfo } from "./types";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
@@ -39,17 +40,23 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   },
   callbacks: {
     jwt({ token, user }) {
-      console.log("jwt---");
       if (user) {
+        const customUser = user as UserInfo;
         // User is available during sign-in
+        token.username = customUser.username;
         token.id = user.id;
       }
+      console.log("jwt---", token);
+
       return token;
     },
 
     session({ session, token }) {
-      console.log("session---");
-      if (session?.user) session.user.id = token.id as string;
+      console.log("session---", token);
+      if (session?.user) {
+        session.user.id = token.id as string;
+        session.user.username = token.username;
+      }
       return session;
     },
   },
