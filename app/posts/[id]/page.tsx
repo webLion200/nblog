@@ -15,7 +15,6 @@ export default async function PostDetail({
       <div className="mt-4 border-t pt-8">
         {/* 添加max-w-3xl限制内容宽度 */}
         <div className="mx-auto max-w-3xl">
-          {/* <MarkdownRenderer content={post.content} /> */}
           <Editor defaultValue={post.content} editable={false} />
         </div>
       </div>

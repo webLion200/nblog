@@ -94,7 +94,7 @@ export default function Editor({
       }}
       className="relative w-full border-stone-200 bg-white sm:mb-[calc(20vh)] sm:rounded-lg sm:border sm:shadow-lg"
     >
-      <div className="p-6 px-8 sm:px-12 flex justify-end">
+      {/* <div className="p-6 px-8 sm:px-12 flex justify-end">
         <div className="relative">
           <ImageUp size={32} className="cursor-pointer" />
           <input
@@ -106,7 +106,7 @@ export default function Editor({
             className="cursor-pointer w-8 h-8 absolute top-0 opacity-0"
           />
         </div>
-      </div>
+      </div> */}
       <EditorContent editor={editor} />
     </div>
   );
