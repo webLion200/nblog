@@ -65,3 +65,20 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     signIn: "/login",
   },
 });
+
+export const validateRequest = async () => {
+  const session = await auth();
+  if (!session || !session?.user) {
+    return {
+      userInfo: {},
+      status: 401,
+    };
+  }
+
+  return {
+    userInfo: {
+      id: session.user.id,
+    },
+    status: 200,
+  };
+};

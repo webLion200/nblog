@@ -23,3 +23,13 @@ export const loginSchema = z.object({
 });
 
 export type LoginValues = z.infer<typeof loginSchema>;
+
+export const postSchema = z.object({
+  title: z
+    .string()
+    .min(1, { message: "请填写标题" })
+    .max(10000, { message: "内容最多10000个字符" }),
+  content: z.string().min(1, { message: "请填写内容" }),
+});
+
+export type PcostValues = z.infer<typeof postSchema>;

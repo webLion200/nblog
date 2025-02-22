@@ -1,8 +1,14 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { postDataInclude } from "@/lib/types";
 
 export default async function HomePage() {
-  const posts = await prisma.post.findMany({ where: { published: true } });
+  const posts = await prisma.post.findMany({
+    include: postDataInclude,
+    orderBy: {
+      updateTime: "desc",
+    },
+  });
   return (
     <div className="mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">博客首页</h1>

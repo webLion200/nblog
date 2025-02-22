@@ -6,9 +6,23 @@ import SlashCommand from "./slash-command";
 import TextStyle from "@tiptap/extension-text-style";
 import TiptapUnderline from "@tiptap/extension-underline";
 import { Color } from "@tiptap/extension-color";
+import { Markdown } from "tiptap-markdown";
 import TaskItem from "@tiptap/extension-task-item";
 import Highlight from "@tiptap/extension-highlight";
 import TaskList from "@tiptap/extension-task-list";
+import CodeBlock from "@tiptap/extension-code-block";
+import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
+import { all, createLowlight } from "lowlight";
+import css from "highlight.js/lib/languages/css";
+import js from "highlight.js/lib/languages/javascript";
+import ts from "highlight.js/lib/languages/typescript";
+import html from "highlight.js/lib/languages/xml";
+
+const lowlight = createLowlight(all);
+lowlight.register("html", html);
+lowlight.register("css", css);
+lowlight.register("js", js);
+lowlight.register("ts", ts);
 
 export const defaultExtensions: Extensions = [
   StarterKit.configure({
@@ -32,17 +46,15 @@ export const defaultExtensions: Extensions = [
         class: "border-l-4 border-stone-700",
       },
     },
-    codeBlock: {
-      HTMLAttributes: {
-        class:
-          "rounded-sm bg-stone-100 p-5 font-mono font-medium text-stone-800",
-      },
-    },
     code: {
       HTMLAttributes: {
         class:
-          "rounded-md bg-stone-200 px-1.5 py-1 font-mono font-medium text-stone-900",
-        spellcheck: "false",
+          "rounded-md bg-gray-100 px-1.5 py-1 font-mono text-red-600 text-sm",
+      },
+    },
+    codeBlock: {
+      HTMLAttributes: {
+        class: "bg-gray-800 text-gray-100 p-4 rounded-lg",
       },
     },
     horizontalRule: false,
@@ -57,6 +69,15 @@ export const defaultExtensions: Extensions = [
   TiptapUnderline,
   TextStyle,
   Color,
+  CodeBlock.configure({
+    HTMLAttributes: {
+      class: "hljs",
+    },
+    languageClassPrefix: "language-",
+  }),
+  CodeBlockLowlight.configure({
+    lowlight,
+  }),
   Highlight.configure({
     multicolor: true,
   }),
@@ -71,14 +92,9 @@ export const defaultExtensions: Extensions = [
     },
     nested: true,
   }),
-  // Markdown.configure({
-  //   html: false,
-  //   transformCopiedText: true,
-  // }),
   Placeholder.configure({
     placeholder: ({ node }) => {
       const nodeName = node.type.name;
-      console.log("nodeName", nodeName);
       if (nodeName === "heading") {
         return `Heading ${node.attrs.level}`;
       }
@@ -92,5 +108,11 @@ export const defaultExtensions: Extensions = [
       return "Press '/' for commands";
     },
     includeChildren: true,
+  }),
+  Markdown.configure({
+    html: false, // 禁用 HTML 解析
+    breaks: true, // 转换换行符为 <br>
+    linkify: true, // 自动转换 URL 为链接
+    transformPastedText: true, // 转换粘贴的文本
   }),
 ];

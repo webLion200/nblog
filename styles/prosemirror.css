@@ -1,6 +1,11 @@
 @import "tailwindcss";
 .ProseMirror {
-  @apply p-12 px-8;
+  @apply p-6 px-8 sm:px-12;
+  min-height: 200px;
+}
+
+.ProseMirror-focused {
+  border: none !important;
 }
 
 .ProseMirror .is-editor-empty:first-child::before {

@@ -1,15 +1,19 @@
 "use client";
 import { useState } from "react";
 import Editor from "@/components/meditor";
+import { createBlog } from "./actions";
 
 export default function CreatePost() {
   const [title, setTitle] = useState("");
-  const [content, setContent] = useState<string | null>(null);
+  const [content, setContent] = useState<string>("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    console.log("content", content);
+    const result = await createBlog({
+      title,
+      content,
+    });
+    console.log("result", result);
   };
 
   return (
@@ -25,8 +29,9 @@ export default function CreatePost() {
         />
 
         <Editor
-          onDebouncedUpdate={(editor) => {
-            setContent(JSON.stringify(editor?.getJSON()));
+          onDebouncedUpdate={(content) => {
+            console.log("content", content);
+            setContent(content);
           }}
         />
         <button
