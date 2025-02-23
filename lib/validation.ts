@@ -33,6 +33,18 @@ export const postSchema = z.object({
     .string()
     .min(1, { message: "请填写内容" })
     .max(10000, { message: "内容最多10000个字符" }),
+  tags: z.array(z.string().min(1)).max(5).optional(), // 限制最多5个标签
 });
 
 export type PostValues = z.infer<typeof postSchema>;
+
+export const tagSchema = z.object({
+  value: z
+    .string()
+    .min(1, "标签值不能为空")
+    .max(50, "标签值最多50个字符")
+    .regex(/^[a-zA-Z0-9-_.]+$/, "只允许字母、数字、中划线和下划线"),
+  label: z.string().min(1, "显示名称不能为空").max(50, "显示名称最多50个字符"),
+});
+
+export type TagValues = z.infer<typeof tagSchema>;

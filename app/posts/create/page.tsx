@@ -15,8 +15,19 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { TagSelect } from "@/components/tag-select";
+import { ScrollArea } from "@/components/ui/scroll-area";
+
+type Tag = {
+  value: string;
+  label: string;
+  color?: string;
+  icon?: React.ReactNode;
+};
 
 export default function CreatePost() {
+  const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
+
   const [isPending, startTransition] = useTransition();
 
   const form = useForm<PostValues>({
@@ -24,6 +35,7 @@ export default function CreatePost() {
     defaultValues: {
       title: "",
       content: "",
+      tags: [],
     },
   });
 
@@ -31,7 +43,6 @@ export default function CreatePost() {
     data: PostValues,
     event?: React.BaseSyntheticEvent
   ) => {
-    debugger;
     if (!event) return;
     // 获取点击的按钮的 value
     const submitType = (event.nativeEvent.submitter as HTMLButtonElement)
@@ -41,6 +52,7 @@ export default function CreatePost() {
         {
           title: data.title,
           content: data.content,
+          tags: data.tags,
         },
         submitType
       );
@@ -48,79 +60,120 @@ export default function CreatePost() {
     });
   };
 
+  const changeSelectedTags = (tags: Tag[]) => {
+    setSelectedTags(tags);
+    const values = tags.map((tag) => tag.value);
+    form.setValue("tags", values);
+  };
+
   return (
-    <div className="container mx-auto flex flex-col h-screen p-4">
-      <h1 className="text-2xl font-bold mb-4 h-10">创建博客</h1>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit((data, event) => onSubmit(data, event))}
-          className="space-y-4 flex flex-col flex-1"
-        >
-          <FormField
-            control={form.control}
-            name="title"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>标题</FormLabel>
-                <FormControl>
-                  <Input
-                    {...field}
-                    type="text"
-                    placeholder="标题"
-                    className="h-10 border rounded-[6px] p-2 w-full"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="content"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>内容</FormLabel>
-                <FormControl>
-                  <Input
-                    {...field}
-                    type="hidden"
-                    placeholder="内容"
-                    className="h-10 border rounded-[6px] p-2 w-full"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Editor
-            className="flex-1 overflow-y-scroll border min-h-0"
-            onDebouncedUpdate={(content) => {
-              form.setValue("content", content);
-              // setContent(content);
-            }}
-          />
-          <div className="flex space-x-5">
-            <Button
-              type="submit"
-              name="action"
-              value="saveDraft"
-              className="rounded-[6px] h-10 bg-gray-200 hover:bg-gray-100 cursor-pointer text-red-400 p-2 w-full"
-              disabled={isPending}
+    <div className="container mx-auto ">
+      <div className="relative flex flex-col h-screen px-4">
+        <h1 className="sticky left-0 right-0 top-0 mx-[-10px] px-[10px] py-10 text-2xl font-bold  bg-white z-10">
+          创建博客
+        </h1>
+        <ScrollArea className="h-[calc(100vh-112px)]">
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit((data, event) =>
+                onSubmit(data, event)
+              )}
+              className="space-y-4 flex flex-col flex-1 "
             >
-              存为草稿
-            </Button>
-            <Button
-              type="submit"
-              name="action"
-              value="publish"
-              className="rounded-[6px] h-10 bg-blue-500 hover:bg-blue-400 cursor-pointer text-white p-2 w-full"
-              disabled={isPending}
-            >
-              直接发布
-            </Button>
-          </div>
-        </form>
-      </Form>
+              <FormField
+                control={form.control}
+                name="title"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>标题</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type="text"
+                        placeholder="标题"
+                        className="h-10 border rounded-[6px] p-2 max-w-md"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="tags"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>标签</FormLabel>
+                    <FormControl>
+                      <div className="max-w-md space-y-4">
+                        <Input
+                          {...field}
+                          type="hidden"
+                          placeholder="内容"
+                          className="h-10 border rounded-[6px] p-2 w-full"
+                        />
+                        <TagSelect
+                          selectedTags={selectedTags}
+                          onSelectTag={changeSelectedTags}
+                        />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="content"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>内容</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type="hidden"
+                        placeholder="内容"
+                        className="h-10 border rounded-[6px] p-2 w-full"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Editor
+                className="flex-1 border"
+                onDebouncedUpdate={(content) => {
+                  form.setValue("content", content);
+                }}
+              />
+              <div className="fixed top-10 right-30 z-100">
+                <div className="flex space-x-5 pr-4">
+                  <Button
+                    type="submit"
+                    name="action"
+                    value="saveDraft"
+                    className="rounded-[6px] h-10 bg-gray-200 hover:bg-gray-100 cursor-pointer text-red-400 p-2 w-full"
+                    disabled={isPending}
+                  >
+                    存为草稿
+                  </Button>
+                  <Button
+                    type="submit"
+                    name="action"
+                    value="publish"
+                    className="rounded-[6px] h-10 bg-blue-500 hover:bg-blue-400 cursor-pointer text-white p-2 w-full"
+                    disabled={isPending}
+                  >
+                    直接发布
+                  </Button>
+                </div>
+              </div>
+            </form>
+          </Form>
+        </ScrollArea>
+      </div>
     </div>
   );
 }
