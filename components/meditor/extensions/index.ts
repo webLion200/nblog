@@ -10,7 +10,7 @@ import { Markdown } from "tiptap-markdown";
 import TaskItem from "@tiptap/extension-task-item";
 import Highlight from "@tiptap/extension-highlight";
 import TaskList from "@tiptap/extension-task-list";
-import CodeBlock from "@tiptap/extension-code-block";
+// import CodeBlock from "@tiptap/extension-code-block";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import { all, createLowlight } from "lowlight";
 import css from "highlight.js/lib/languages/css";
@@ -52,11 +52,12 @@ export const defaultExtensions: Extensions = [
           "rounded-md bg-gray-100 px-1.5 py-1 font-mono text-red-600 text-sm",
       },
     },
-    codeBlock: {
-      HTMLAttributes: {
-        class: "bg-gray-800 text-gray-100 p-4 rounded-lg",
-      },
-    },
+    // codeBlock: {
+    //   HTMLAttributes: {
+    //     class: "bg-gray-800 text-gray-100 p-4 rounded-lg",
+    //   },
+    // },
+    codeBlock: false,
     horizontalRule: false,
     dropcursor: {
       color: "#DBEAFE",
@@ -69,12 +70,12 @@ export const defaultExtensions: Extensions = [
   TiptapUnderline,
   TextStyle,
   Color,
-  CodeBlock.configure({
-    HTMLAttributes: {
-      class: "hljs",
-    },
-    languageClassPrefix: "language-",
-  }),
+  // CodeBlock.configure({
+  //   HTMLAttributes: {
+  //     class: "hljs",
+  //   },
+  //   languageClassPrefix: "language-",
+  // }),
   CodeBlockLowlight.configure({
     lowlight,
   }),

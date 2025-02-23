@@ -28,8 +28,11 @@ export const postSchema = z.object({
   title: z
     .string()
     .min(1, { message: "请填写标题" })
+    .max(100, { message: "标题最多100个字符" }),
+  content: z
+    .string()
+    .min(1, { message: "请填写内容" })
     .max(10000, { message: "内容最多10000个字符" }),
-  content: z.string().min(1, { message: "请填写内容" }),
 });
 
-export type PcostValues = z.infer<typeof postSchema>;
+export type PostValues = z.infer<typeof postSchema>;
