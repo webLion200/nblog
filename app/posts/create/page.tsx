@@ -1,11 +1,11 @@
 "use client";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import Editor from "@/components/meditor";
 import { createBlog, BtnType } from "./actions";
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { postSchema, PostValues } from "@/lib/validation";
+import { CategoryValues, postSchema, PostValues } from "@/lib/validation";
 import {
   Form,
   FormControl,
@@ -17,6 +17,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { TagSelect } from "@/components/tag-select";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { toast } from "sonner";
+import { CreateCategoryDialog } from "@/components/createCategoryDialog";
+import { CategorySelect } from "@/components/category-select";
 
 type Tag = {
   value: string;
@@ -27,6 +30,8 @@ type Tag = {
 
 export default function CreatePost() {
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string>("");
+  const [cateDialogVisible, setCateDialogVisible] = useState(false);
 
   const [isPending, startTransition] = useTransition();
 
@@ -36,6 +41,7 @@ export default function CreatePost() {
       title: "",
       content: "",
       tags: [],
+      categoryId: "",
     },
   });
 
@@ -45,18 +51,19 @@ export default function CreatePost() {
   ) => {
     if (!event) return;
     // 获取点击的按钮的 value
-    const submitType = (event.nativeEvent.submitter as HTMLButtonElement)
-      ?.value as BtnType;
+    const submitType = (
+      (event.nativeEvent as SubmitEvent).submitter as HTMLButtonElement
+    )?.value as BtnType;
     startTransition(async () => {
-      const result = await createBlog(
+      await createBlog(
         {
           title: data.title,
           content: data.content,
           tags: data.tags,
+          categoryId: data.categoryId,
         },
         submitType
       );
-      console.log("result", result);
     });
   };
 
@@ -64,6 +71,16 @@ export default function CreatePost() {
     setSelectedTags(tags);
     const values = tags.map((tag) => tag.value);
     form.setValue("tags", values);
+  };
+
+  const changeCategory = (id: string) => {
+    if (!id) return;
+    setSelectedCategoryId(id);
+    form.setValue("categoryId", id);
+  };
+
+  const handleTriggerCateDialog = (bool: boolean) => {
+    setCateDialogVisible(bool);
   };
 
   return (
@@ -106,7 +123,7 @@ export default function CreatePost() {
                   <FormItem>
                     <FormLabel>标签</FormLabel>
                     <FormControl>
-                      <div className="max-w-md space-y-4">
+                      <div className="max-w-md space-y-4 relative">
                         <Input
                           {...field}
                           type="hidden"
@@ -116,6 +133,47 @@ export default function CreatePost() {
                         <TagSelect
                           selectedTags={selectedTags}
                           onSelectTag={changeSelectedTags}
+                        />
+                        <span
+                          onClick={() => toast("等待开发")}
+                          className="text-blue-400 cursor-pointer hover:underline absolute top-[-30px] right-0"
+                        >
+                          管理标签
+                        </span>
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="categoryId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>目录</FormLabel>
+                    <FormControl>
+                      <div className="max-w-md space-y-4 relative">
+                        <Input
+                          {...field}
+                          type="hidden"
+                          placeholder="内容"
+                          className="h-10 border rounded-[6px] p-2 w-full"
+                        />
+                        <span
+                          onClick={() => handleTriggerCateDialog(true)}
+                          className="text-blue-400 cursor-pointer hover:underline absolute top-[-30px] right-0"
+                        >
+                          新建目录
+                        </span>
+                        <CreateCategoryDialog
+                          open={cateDialogVisible}
+                          onOpenChange={handleTriggerCateDialog}
+                        />
+                        <CategorySelect
+                          selectedId={selectedCategoryId}
+                          onSelect={changeCategory}
                         />
                       </div>
                     </FormControl>
@@ -148,7 +206,7 @@ export default function CreatePost() {
                   form.setValue("content", content);
                 }}
               />
-              <div className="fixed top-10 right-30 z-100">
+              <div className="fixed top-10 right-30 z-50">
                 <div className="flex space-x-5 pr-4">
                   <Button
                     type="submit"

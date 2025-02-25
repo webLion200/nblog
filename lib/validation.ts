@@ -34,6 +34,7 @@ export const postSchema = z.object({
     .min(1, { message: "请填写内容" })
     .max(10000, { message: "内容最多10000个字符" }),
   tags: z.array(z.string().min(1)).max(5).optional(), // 限制最多5个标签
+  categoryId: z.string().optional(),
 });
 
 export type PostValues = z.infer<typeof postSchema>;
@@ -48,3 +49,9 @@ export const tagSchema = z.object({
 });
 
 export type TagValues = z.infer<typeof tagSchema>;
+
+export const categorySchema = z.object({
+  name: z.string().min(1).max(50),
+});
+
+export type CategoryValues = z.infer<typeof categorySchema>;
