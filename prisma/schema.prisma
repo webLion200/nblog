@@ -61,7 +61,6 @@ model PostTag {
   tag    Tag    @relation(fields: [tagId], references: [id])
 
   @@id([postId, tagId])
-  @@index([tagId], map: "PostTag_tagId_fkey")
 }
 
 model Category {

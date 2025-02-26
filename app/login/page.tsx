@@ -51,14 +51,19 @@ export default function LoginPage() {
               </>
             )}
           </div>
-          <Link
-            href={{
-              pathname: "/signup",
-              query: { username, type: "reset" },
-            }}
-          >
-            忘记密码？
-          </Link>
+          <div className="flex justify-end space-x-2 w-full">
+            <Link
+              href={{
+                pathname: "/signup",
+                query: { username, type: "reset" },
+              }}
+            >
+              忘记密码？
+            </Link>
+            <Link className="text-blue-500" href="/signup">
+              注册用户
+            </Link>
+          </div>
         </CardFooter>
       </Card>
     </div>

@@ -32,7 +32,7 @@ export const postSchema = z.object({
   content: z
     .string()
     .min(1, { message: "请填写内容" })
-    .max(10000, { message: "内容最多10000个字符" }),
+    .max(20000, { message: "内容最多20000个字符" }),
   tags: z.array(z.string().min(1)).max(5).optional(), // 限制最多5个标签
   categoryId: z.string().optional(),
 });
