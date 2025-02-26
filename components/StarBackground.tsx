@@ -181,6 +181,8 @@ const StarBackground = () => {
     return () => {
       window.removeEventListener("resize", handleResize);
       canvas.removeEventListener("mousemove", handleMouseMove);
+      canvas.removeEventListener("click", handleClick);
+
       if (animationFrameId.current) {
         cancelAnimationFrame(animationFrameId.current);
       }
@@ -189,7 +191,7 @@ const StarBackground = () => {
 
   useEffect(initCanvas, []);
 
-  return <canvas ref={canvasRef} className="fixed top-0 left-0 z-0 " />;
+  return <canvas ref={canvasRef} className="fixed top-0 left-0 -z-0" />;
 };
 
 export default StarBackground;

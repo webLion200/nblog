@@ -10,13 +10,10 @@ export default async function PostDetail({
   const post = await prisma.post.findUnique({ where: { id } });
   if (!post) return <p>文章未找到</p>;
   return (
-    <div className="container mx-auto p-4 min-h-screen">
-      <h1 className="text-3xl font-bold mb-8">{post.title}</h1>
-      <div className="mt-4 border-t pt-8">
-        {/* 添加max-w-3xl限制内容宽度 */}
-        <div className="mx-auto max-w-3xl">
-          <Editor defaultValue={post.content} editable={false} />
-        </div>
+    <div className="max-w-3xl mx-auto p-4 min-h-screen backdrop-blur-sm">
+      <div className="text-3xl font-bold text-white">{post.title}</div>
+      <div className="pt-8">
+        <Editor defaultValue={post.content} editable={false} />
       </div>
     </div>
   );
