@@ -68,10 +68,47 @@ class Trail {
   }
 }
 
+class Heart {
+  x: number;
+  y: number;
+  size: number;
+  alpha: number;
+  private ctx: CanvasRenderingContext2D;
+
+  constructor(ctx: CanvasRenderingContext2D, x: number, y: number) {
+    this.ctx = ctx;
+    this.x = x;
+    this.y = y;
+    this.size = 15;
+    this.alpha = 1;
+  }
+
+  update() {
+    this.alpha -= 0.02; // 逐渐透明
+    this.size += 0.5; // 缩放效果
+  }
+
+  draw() {
+    this.ctx.save();
+    this.ctx.translate(this.x, this.y);
+    this.ctx.scale(this.size / 15, this.size / 15);
+    this.ctx.globalAlpha = this.alpha;
+
+    this.ctx.fillStyle = "rgba(255, 0, 100, 1)";
+    this.ctx.beginPath();
+    this.ctx.moveTo(0, 0);
+    this.ctx.bezierCurveTo(-10, -10, -15, 5, 0, 15);
+    this.ctx.bezierCurveTo(15, 5, 10, -10, 0, 0);
+    this.ctx.fill();
+    this.ctx.restore();
+  }
+}
+
 const StarBackground = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const stars = useRef<Star[]>([]);
   const trails = useRef<Trail[]>([]);
+  const hearts = useRef<Heart[]>([]);
   const animationFrameId = useRef<number>();
 
   const initCanvas = () => {
@@ -103,6 +140,11 @@ const StarBackground = () => {
     };
     canvas.addEventListener("mousemove", handleMouseMove);
 
+    const handleClick = (e: MouseEvent) => {
+      hearts.current.push(new Heart(ctx, e.clientX, e.clientY));
+    };
+    canvas.addEventListener("click", handleClick);
+
     // 动画循环
     const animate = () => {
       ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
@@ -123,6 +165,14 @@ const StarBackground = () => {
         }
       });
 
+      hearts.current.forEach((heart, index) => {
+        heart.update();
+        heart.draw();
+        if (heart.alpha <= 0) {
+          hearts.current.splice(index, 1);
+        }
+      });
+
       animationFrameId.current = requestAnimationFrame(animate);
     };
     animate();
@@ -139,7 +189,7 @@ const StarBackground = () => {
 
   useEffect(initCanvas, []);
 
-  return <canvas ref={canvasRef} className="fixed top-0 left-0 -z-10 " />;
+  return <canvas ref={canvasRef} className="fixed top-0 left-0 z-0 " />;
 };
 
 export default StarBackground;
