@@ -67,7 +67,7 @@ export function CategorySelect({
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          <SelectItem key="0" value={"0"}>
+          <SelectItem key="-1" value={"-1"}>
             首页
           </SelectItem>
           {categories.map((cate) => (

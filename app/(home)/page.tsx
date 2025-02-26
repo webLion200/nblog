@@ -1,29 +1,30 @@
-import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { postDataInclude } from "@/lib/types";
+import PostCard from "@/components/postCard";
 
 export default async function HomePage() {
-  const posts = await prisma.post.findMany({
+  const result = await prisma.post.findMany({
+    where: {
+      published: true,
+    },
     include: postDataInclude,
     orderBy: {
       updateTime: "desc",
     },
   });
+
+  const posts = result.map((post) => ({
+    ...post,
+    postTags: post.postTags.map((postTag) => postTag.tag),
+  }));
+
   return (
-    <div className="mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">博客首页</h1>
-      <ul>
+    <div className="mx-auto p-6 border-1 border-gray-50 rounded-b-2xl bg-white/90 backdrop-blur-sm">
+      <div>
         {posts.map((post) => (
-          <li key={post.id} className="mb-2">
-            <Link
-              href={`/posts/${post.id}`}
-              className="text-blue-500 hover:underline"
-            >
-              {post.title}
-            </Link>
-          </li>
+          <PostCard key={post.id} data={post} />
         ))}
-      </ul>
+      </div>
     </div>
   );
 }

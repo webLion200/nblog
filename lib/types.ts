@@ -22,6 +22,23 @@ export const postDataInclude = {
   author: {
     select: userDataSelect,
   },
+  postTags: {
+    select: {
+      tag: {
+        select: {
+          id: true,
+          label: true,
+          value: true,
+        },
+      },
+    },
+  },
+  category: {
+    select: {
+      id: true,
+      name: true,
+    },
+  },
 } satisfies Prisma.PostInclude;
 
 export type PostData = Prisma.PostGetPayload<{

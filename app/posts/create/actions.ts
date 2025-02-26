@@ -15,10 +15,14 @@ export const createBlog = async (data: PostValues, submitType: BtnType) => {
 
   const result = postSchema.safeParse(data);
   if (result.success) {
-    const { content, title, tags, categoryId } = result.data;
+    const { content, title, tags } = result.data;
     const published: boolean = submitType === "publish";
     // 创建博客并返回关联的用户信息
     const userId = userInfo.id;
+    let categoryId = result.data.categoryId || null;
+    if (categoryId === "-1") {
+      categoryId = null;
+    }
 
     await prisma.post.create({
       data: {

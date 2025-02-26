@@ -46,6 +46,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
+    "dayjs": "^1.11.13",
     "jsonwebtoken": "^9.0.2",
     "lowlight": "^3.3.0",
     "lucide-react": "^0.475.0",

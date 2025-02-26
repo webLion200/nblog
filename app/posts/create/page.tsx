@@ -5,7 +5,7 @@ import { createBlog, BtnType } from "./actions";
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CategoryValues, postSchema, PostValues } from "@/lib/validation";
+import { postSchema, PostValues } from "@/lib/validation";
 import {
   Form,
   FormControl,
