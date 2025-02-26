@@ -141,7 +141,7 @@ const StarBackground = () => {
     canvas.addEventListener("mousemove", handleMouseMove);
 
     const handleClick = (e: MouseEvent) => {
-      hearts.current.push(new Heart(ctx, e.clientX, e.clientY));
+      hearts.current.push(new Heart(ctx, e.clientX, e.clientY - 20));
     };
     canvas.addEventListener("click", handleClick);
 
