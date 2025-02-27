@@ -1,6 +1,7 @@
 "use client";
 import { cn } from "@/lib/utils";
 import { FileText, Folders } from "lucide-react";
+import Link from "next/link";
 import React, { useState } from "react";
 
 interface Item {
@@ -21,7 +22,7 @@ const Item: React.FC<{ item: Item }> = ({ item }) => {
     <li className="py-1">
       <div
         className={cn(
-          `cursor-pointer flex items-center  ${
+          `cursor-pointer flex items-center ${
             item.type === "folder"
               ? "text-[1rem]"
               : "text-[0.9rem] text-gray-600"
@@ -29,11 +30,24 @@ const Item: React.FC<{ item: Item }> = ({ item }) => {
         )}
         onClick={() => setIsOpen(!isOpen)}
       >
-        <span>
+        <span className="mr-2">
           {item.type === "folder" && <Folders strokeWidth={1} size={10} />}
           {item.type === "file" && <FileText strokeWidth={1} size={10} />}
         </span>
-        <span className="truncate">{item.title}</span>
+
+        {item.type === "folder" && (
+          <span className="truncate">{item.title}</span>
+        )}
+        {item.type === "file" && (
+          <Link href={`/posts/${item.id}`} className="truncate">
+            {item.title}
+          </Link>
+        )}
+        {item?.children && (
+          <span className="text-[0.8rem] text-gray-500">
+            ({item.children?.length})
+          </span>
+        )}
       </div>
       {isOpen && item.children && (
         <ul className="pl-2">
