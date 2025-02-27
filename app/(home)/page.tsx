@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { postDataInclude } from "@/lib/types";
-import PostCard from "@/components/postCard";
+import PostCard from "@/components/post-card";
 
 export default async function HomePage() {
   const result = await prisma.post.findMany({
