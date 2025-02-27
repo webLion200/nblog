@@ -11,6 +11,7 @@ interface PostCardProps {
     author: { id: string; username: string };
     id: string;
     content: string;
+    summary: string;
     authorId: string;
     published: boolean;
     categoryId: string | null;
@@ -57,6 +58,7 @@ export default function PostCard({ data }: PostCardProps) {
           transitionTimingFunction: "cubic-bezier(0.4, 0, 1, 1)", // 更明显的加速曲线
         }}
       />
+      <div className="">{data.summary}</div>
     </div>
   );
 }

@@ -20,7 +20,8 @@ model User {
 
 model Post {
   id         String    @id @default(uuid())
-  title      String
+  title      String    @db.VarChar(120)
+  summary    String?   @db.VarChar(800)
   content    String    @db.Text
   published  Boolean   @default(false)
   authorId   String

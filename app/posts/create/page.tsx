@@ -55,7 +55,7 @@ export default function CreatePost() {
       (event.nativeEvent as SubmitEvent).submitter as HTMLButtonElement
     )?.value as BtnType;
     startTransition(async () => {
-      await createBlog(
+      const result = await createBlog(
         {
           title: data.title,
           content: data.content,
@@ -64,6 +64,10 @@ export default function CreatePost() {
         },
         submitType
       );
+
+      if (result?.error) {
+        alert(result.error);
+      }
     });
   };
 
@@ -84,12 +88,12 @@ export default function CreatePost() {
   };
 
   return (
-    <div className="container mx-auto ">
-      <div className="relative flex flex-col h-screen px-4">
-        <h1 className="sticky left-0 right-0 top-0 mx-[-10px] px-[10px] py-10 text-2xl font-bold  bg-white z-10">
+    <div className="container mx-auto bg-white">
+      <div className="relative flex flex-col h-screen">
+        <h1 className="sticky left-0 right-0 top-0 px-[10px] py-10 text-2xl font-bold  bg-white z-10">
           创建博客
         </h1>
-        <ScrollArea className="h-[calc(100vh-112px)]">
+        <ScrollArea className="h-[calc(100vh-112px)] bg-white p-4">
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit((data, event) =>
@@ -108,6 +112,7 @@ export default function CreatePost() {
                         {...field}
                         type="text"
                         placeholder="标题"
+                        maxLength={120}
                         className="h-10 border rounded-[6px] p-2 max-w-md"
                       />
                     </FormControl>
@@ -202,11 +207,11 @@ export default function CreatePost() {
               />
               <Editor
                 className="flex-1 border"
-                onDebouncedUpdate={(content) => {
+                onDebouncedUpdate={async (content) => {
                   form.setValue("content", content);
                 }}
               />
-              <div className="fixed top-10 right-30 z-50">
+              <div className="fixed top-10 right-50 z-50">
                 <div className="flex space-x-5 pr-4">
                   <Button
                     type="submit"
