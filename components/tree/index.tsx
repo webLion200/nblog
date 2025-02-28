@@ -50,7 +50,7 @@ const Item: React.FC<{ item: Item }> = ({ item }) => {
         )}
       </div>
       {isOpen && item.children && (
-        <ul className="pl-2">
+        <ul className="pl-2" key={item.id}>
           {item.children.map((child) => (
             <>
               <Item key={child.id} item={child} />

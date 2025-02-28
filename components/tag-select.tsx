@@ -78,7 +78,7 @@ export function TagSelect({ selectedTags = [], onSelectTag }: TagSelectProps) {
 
   const createTag = async (values: TagValues) => {
     try {
-      const response = await fetch("/api/tags/add", {
+      const response = await fetch("/api/tags", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -201,8 +201,6 @@ export function TagSelect({ selectedTags = [], onSelectTag }: TagSelectProps) {
           </Command>
         </PopoverContent>
       </Popover>
-
-      <Toaster position="top-left" />
     </div>
   );
 }
