@@ -17,9 +17,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { TagSelect } from "@/components/tag-select";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { toast } from "sonner";
 import { CreateCategoryDialog } from "@/components/createCategoryDialog";
 import { CategorySelect } from "@/components/category-select";
+import { CreateTagDialog } from "@/components/createTagDialog";
 
 type Tag = {
   value: string;
@@ -32,6 +32,7 @@ export default function CreatePost() {
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
   const [selectedCategoryId, setSelectedCategoryId] = useState<string>("");
   const [cateDialogVisible, setCateDialogVisible] = useState(false);
+  const [tagDialogVisible, setTagDialogVisible] = useState(false);
 
   const [isPending, startTransition] = useTransition();
 
@@ -140,7 +141,7 @@ export default function CreatePost() {
                           onSelectTag={changeSelectedTags}
                         />
                         <span
-                          onClick={() => toast("等待开发")}
+                          onClick={() => setTagDialogVisible(true)}
                           className="text-blue-400 cursor-pointer hover:underline absolute top-[-30px] right-0"
                         >
                           管理标签
@@ -170,12 +171,8 @@ export default function CreatePost() {
                           onClick={() => handleTriggerCateDialog(true)}
                           className="text-blue-400 cursor-pointer hover:underline absolute top-[-30px] right-0"
                         >
-                          新建目录
+                          管理目录
                         </span>
-                        <CreateCategoryDialog
-                          open={cateDialogVisible}
-                          onOpenChange={handleTriggerCateDialog}
-                        />
                         <CategorySelect
                           selectedId={selectedCategoryId}
                           onSelect={changeCategory}
@@ -236,6 +233,14 @@ export default function CreatePost() {
             </form>
           </Form>
         </ScrollArea>
+        <CreateTagDialog
+          open={tagDialogVisible}
+          onOpenChange={setTagDialogVisible}
+        />
+        <CreateCategoryDialog
+          open={cateDialogVisible}
+          onOpenChange={handleTriggerCateDialog}
+        />
       </div>
     </div>
   );

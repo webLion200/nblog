@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { ReactNode, Suspense } from "react";
 import DetailLoading from "./loading";
+import Tools from "./tools";
 
 interface IPost {
   id: string;
@@ -64,6 +65,9 @@ export default async function MainLayout({
         <Tree data={directoryData} />
       </div>
       <Suspense fallback={<DetailLoading />}>{children}</Suspense>
+      <div className={`sticky top-10/12 w-20 h-fit `}>
+        <Tools />
+      </div>
     </ScrollArea>
   );
 }
