@@ -53,7 +53,7 @@ export const defaultEditorContent = {
     {
       type: "image",
       attrs: {
-        src: "https://iskzuogcmkzumadqjnbv.supabase.co/storage/v1/object/public/posts/banner/banners.png",
+        src: "https://abc/storage/v1/object/public/posts/banner/banners.png",
         alt: "banners.png",
         title: "banners.png",
         width: null,
