@@ -3,24 +3,9 @@ import { CalendarDays, Eye, Flag, MessageCircleMore } from "lucide-react";
 import dayjs from "dayjs";
 import { useState } from "react";
 import Link from "next/link";
+import { PostValues } from "@/lib/types";
 
-interface PostCardProps {
-  data: {
-    postTags: { id: string; value: string; label: string }[];
-    category: { name: string; id: string } | null;
-    author: { id: string; username: string };
-    id: string;
-    content: string;
-    summary: string;
-    authorId: string;
-    published: boolean;
-    categoryId: string | null;
-    title: string;
-    createTime: Date;
-  };
-}
-
-export default function PostCard({ data }: PostCardProps) {
+export default function PostCard({ data }: { data: PostValues }) {
   const [isHovered, setIsHovered] = useState(false);
   return (
     <div

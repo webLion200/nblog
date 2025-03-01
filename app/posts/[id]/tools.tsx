@@ -11,7 +11,7 @@ export default function Tools() {
 
   return (
     <div className="space-y-3">
-      <Link href={`/post/edit/${id}`} className={commonButtonClasses}>
+      <Link href={`/posts/edit/${id}`} className={commonButtonClasses}>
         <Pencil size={16} strokeWidth={3} className="text-gray-500 font-bold" />
       </Link>
       <div

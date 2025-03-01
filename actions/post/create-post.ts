@@ -3,13 +3,16 @@
 import { validateRequest } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { extractSummary } from "@/lib/utils";
-import { PostValues, postSchema } from "@/lib/validation";
+import { PostSchemaValues, postSchema } from "@/lib/validation";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { redirect } from "next/navigation";
 
 export type BtnType = "publish" | "saveDraft";
 
-export const createBlog = async (data: PostValues, submitType: BtnType) => {
+export const createBlog = async (
+  data: PostSchemaValues,
+  submitType: BtnType
+) => {
   try {
     const { userInfo } = await validateRequest();
     if (!userInfo?.id) {
@@ -41,7 +44,7 @@ export const createBlog = async (data: PostValues, submitType: BtnType) => {
         authorId: userId,
         published, // 默认未发布
         categoryId,
-        postTags: {
+        tags: {
           create: tags?.map((tagVal) => {
             return {
               tag: {

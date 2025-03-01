@@ -5,7 +5,7 @@ import { useState, useMemo, KeyboardEvent, useEffect } from "react";
 import { Check, X, ChevronsUpDown } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { toast, Toaster } from "sonner";
+import { toast } from "sonner";
 import {
   Command,
   CommandEmpty,
@@ -23,6 +23,7 @@ import { cn } from "@/lib/utils";
 import { tagSchema, TagValues } from "@/lib/validation";
 
 type Tag = {
+  id?: string;
   value: string;
   label: string;
 };

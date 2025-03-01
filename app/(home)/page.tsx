@@ -15,7 +15,7 @@ export default async function HomePage() {
 
   const posts = result.map((post) => ({
     ...post,
-    postTags: post.postTags.map((postTag) => postTag.tag),
+    tags: post.tags.map((postTag) => postTag.tag),
   }));
 
   return (

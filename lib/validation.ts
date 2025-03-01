@@ -37,7 +37,7 @@ export const postSchema = z.object({
   categoryId: z.string().optional(),
 });
 
-export type PostValues = z.infer<typeof postSchema>;
+export type PostSchemaValues = z.infer<typeof postSchema>;
 
 export const tagSchema = z.object({
   value: z

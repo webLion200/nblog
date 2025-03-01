@@ -19,11 +19,13 @@ interface Category {
 interface CategorySelectProps {
   selectedId: string;
   onSelect: (id: string) => void;
+  formField: any;
 }
 
 export function CategorySelect({
   selectedId = "",
   onSelect,
+  formField,
 }: CategorySelectProps) {
   const handleSelect = (categoryId: string) => {
     onSelect(categoryId);
@@ -35,19 +37,13 @@ export function CategorySelect({
   const loadCategories = async () => {
     const response = await fetch("/api/categories");
     const data = await response.json();
+    console.log("categoryId", selectedId);
+    console.log("data", data);
     setCategories(data);
   };
 
   useEffect(() => {
     loadCategories();
-  }, []);
-
-  useEffect(() => {
-    fetch("/api/categories")
-      .then((res) => res.json())
-      .then((data) => {
-        setCategories(data);
-      });
   }, []);
 
   const handleOpenChange = (open: boolean) => {
@@ -58,6 +54,7 @@ export function CategorySelect({
 
   return (
     <Select
+      {...formField}
       onValueChange={handleSelect}
       defaultValue={selectedId}
       onOpenChange={handleOpenChange}
@@ -67,9 +64,6 @@ export function CategorySelect({
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          <SelectItem key="-1" value={"-1"}>
-            首页
-          </SelectItem>
           {categories.map((cate) => (
             <SelectItem
               value={cate.id}

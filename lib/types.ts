@@ -22,7 +22,7 @@ export const postDataInclude = {
   author: {
     select: userDataSelect,
   },
-  postTags: {
+  tags: {
     select: {
       tag: {
         select: {
@@ -44,3 +44,17 @@ export const postDataInclude = {
 export type PostData = Prisma.PostGetPayload<{
   include: typeof postDataInclude;
 }>;
+
+export type PostValues = {
+  tags?: { id: string; value: string; label: string }[];
+  category?: { name: string; id: string } | null;
+  author: { id: string; username: string };
+  id: string;
+  content: string;
+  summary?: string | null;
+  authorId: string;
+  published: boolean;
+  categoryId: string | null;
+  title: string;
+  createTime: Date;
+};
