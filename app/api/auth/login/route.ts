@@ -46,7 +46,6 @@ export async function POST(req: Request) {
     const token = signJwt({ userId: user.id });
     return NextResponse.json({ message: "登录成功", token }, { status: 200 });
   } catch (error) {
-    console.log(error);
     return NextResponse.json({ error: "服务器错误" }, { status: 500 });
   }
 }

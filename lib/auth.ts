@@ -46,7 +46,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         token.username = customUser.username;
         token.id = user.id;
       }
-      console.log("jwt---", token);
 
       return token;
     },
