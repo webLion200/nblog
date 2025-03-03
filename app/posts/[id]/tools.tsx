@@ -1,4 +1,5 @@
 "use client";
+import { useSession } from "@/lib/SessionProvider";
 import { ArrowUpFromLine, MessageSquareMore, Pencil } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -9,11 +10,19 @@ const commonButtonClasses =
 export default function Tools() {
   const { id } = useParams();
 
+  const session = useSession();
+
   return (
     <div className="space-y-3">
-      <Link href={`/posts/edit/${id}`} className={commonButtonClasses}>
-        <Pencil size={16} strokeWidth={3} className="text-gray-500 font-bold" />
-      </Link>
+      {session?.user && (
+        <Link href={`/posts/edit/${id}`} className={commonButtonClasses}>
+          <Pencil
+            size={16}
+            strokeWidth={3}
+            className="text-gray-500 font-bold"
+          />
+        </Link>
+      )}
       <div
         className={commonButtonClasses}
         onClick={() => toast("暂未开发,尽请期待")}

@@ -124,7 +124,6 @@ export function CreateCategoryDialog({ onOpenChange, open = false }: IProps) {
   }, []);
 
   const handleClickStart = async (row: Category) => {
-    console.log("handleClickStart", row);
     ConfirmDialogFn({
       title: <span>删除目录</span>,
       content: <span>确定要删除该目录吗？</span>,

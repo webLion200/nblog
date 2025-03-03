@@ -127,7 +127,6 @@ const getSuggestionItems = ({ query }: { query: string }) => {
       searchTerms: ["unordered", "point"],
       icon: <List size={18} />,
       command: ({ editor, range }: CommandProps) => {
-        console.log("range", range);
         editor.chain().focus().deleteRange(range).toggleBulletList().run();
       },
     },

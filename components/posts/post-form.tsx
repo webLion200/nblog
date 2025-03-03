@@ -111,7 +111,6 @@ export default function PostForm({ defaultValues, type = "new" }: Props) {
         }
       });
     } catch (error: Error) {
-      console.log("error", error);
       toast(error?.messages);
     }
   };

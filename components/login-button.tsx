@@ -20,13 +20,8 @@ export default function LoginButton() {
   };
 
   return !session?.user ? (
-    <Link href="/login">
-      <Avatar>
-        <AvatarImage src="https://github.com/shadcn.png" />
-        <AvatarFallback className="bg-amber-500 text-white font-bold">
-          B
-        </AvatarFallback>
-      </Avatar>
+    <Link href="/login" className="text-white cursor-pointer hover:underline">
+      Login
     </Link>
   ) : (
     <DropdownMenu>

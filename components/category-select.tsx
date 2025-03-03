@@ -37,8 +37,6 @@ export function CategorySelect({
   const loadCategories = async () => {
     const response = await fetch("/api/categories");
     const data = await response.json();
-    console.log("categoryId", selectedId);
-    console.log("data", data);
     setCategories(data);
   };
 

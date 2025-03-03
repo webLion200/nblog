@@ -1,4 +1,3 @@
-import { MainHeader } from "@/components/main-header";
 import { auth } from "@/lib/auth";
 import { ReactNode } from "react";
 import SessionProvider from "../../lib/SessionProvider";
@@ -14,10 +13,7 @@ export default async function MainLayout({
   return (
     <SessionProvider value={session}>
       <StarBackground />
-      <div className="container mx-auto">
-        <MainHeader />
-        <div>{children}</div>
-      </div>
+      <div>{children}</div>
     </SessionProvider>
   );
 }

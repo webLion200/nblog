@@ -64,7 +64,7 @@ export default async function HomePage({
 
   return (
     <div className="mx-auto p-6 border-1 border-gray-50 rounded-b-2xl bg-white/90 backdrop-blur-sm">
-      <div className="min-h-[calc(100vh-200px)] ">
+      <div className="min-h-[calc(100vh-300px)] ">
         {posts.length > 0 ? (
           posts.map((post) => <PostCard key={post.id} data={post} />)
         ) : (

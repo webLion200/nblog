@@ -12,7 +12,7 @@ export default function LoginPage() {
   const [username, setUsername] = useState("");
 
   return (
-    <div className="h-lvh flex justify-center items-center">
+    <div className="bg-white h-lvh flex justify-center items-center">
       <Card className="w-xl pt-10">
         <CardTitle className="text-center">登录页</CardTitle>
         <CardContent className="mt-10">
