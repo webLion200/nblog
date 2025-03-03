@@ -14,9 +14,11 @@ export default function PostCard({ data }: { data: PostValues }) {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="text-3xl text-black pb-2 border-b-1 border-gray-100 hover:border-blue-400 hover:text-blue-400">
-        <Link href={`/posts/${data.id}`}>{data.title}</Link>
-      </div>
+      <Link href={`/posts/${data.id}`}>
+        <div className="text-3xl text-black pb-2 border-b-1 border-gray-100 hover:border-blue-400 hover:text-blue-400">
+          {data.title}
+        </div>
+      </Link>
 
       <div className="flex text-sm py-2 space-x-4 text-[12px] text-gray-600">
         <div className="flex items-center border-r-2 border-gray-400 pr-4">
