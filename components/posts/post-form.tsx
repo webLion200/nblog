@@ -32,11 +32,11 @@ type Tag = {
 };
 
 type Props = {
-  defaultValues: Partial<PostValues>;
+  defaultValues?: Partial<PostValues>;
   type?: "new" | "edit";
 };
 
-export default function PostForm({ defaultValues, type = "new" }: Props) {
+export default function PostForm({ defaultValues = {}, type = "new" }: Props) {
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
   const [selectedCategoryId, setSelectedCategoryId] = useState<string>("");
   const [cateDialogVisible, setCateDialogVisible] = useState(false);
@@ -57,8 +57,8 @@ export default function PostForm({ defaultValues, type = "new" }: Props) {
   const form = useForm<PostSchemaValues>({
     resolver: zodResolver(postSchema),
     defaultValues: {
-      title: defaultValues.title || "",
-      content: defaultValues.content || "",
+      title: defaultValues?.title || "",
+      content: defaultValues?.content || "",
       tags: defaultValues?.tags?.map((tag) => tag.value) || [],
       categoryId: "",
     },

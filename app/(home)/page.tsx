@@ -16,16 +16,17 @@ export default async function HomePage({
 }: {
   searchParams: SearchParams;
 }) {
+  const _searchParams = await searchParams;
   const currentPage = Math.max(
     1,
     parseInt(
-      (Array.isArray(searchParams?.page)
-        ? searchParams?.page[0]
-        : searchParams?.page) || "1"
+      (Array.isArray(_searchParams?.page)
+        ? _searchParams?.page[0]
+        : _searchParams?.page) || "1"
     )
   );
 
-  const cateId = (await searchParams)?.cate || "all";
+  const cateId = _searchParams?.cate || "all";
 
   // 计算跳过数量
   const skip = (currentPage - 1) * ITEMS_PER_PAGE;
