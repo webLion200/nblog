@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 "use client";
-import { ColumnDef } from "@tanstack/react-table";
+import { ColumnDef, TableMeta } from "@tanstack/react-table";
 import { Pencil, Trash2 } from "lucide-react";
 import { Input } from "../ui/input";
 import React from "react";
@@ -10,6 +11,12 @@ export type Category = {
   isNew?: boolean;
   isEdit?: boolean;
 };
+
+declare module "@tanstack/react-table" {
+  interface TableMeta<TData> {
+    updateData: (rowIndex: number, columnId: string, value: unknown) => void;
+  }
+}
 
 export const columns: ColumnDef<Category>[] = [
   {

@@ -2,20 +2,12 @@ import { prisma } from "@/lib/prisma";
 import { postDataInclude } from "@/lib/types";
 import PostCard from "@/components/post-card";
 import { Pagination } from "@/components/pagination/server-pagination";
-
-type SearchParams = {
-  cate?: string;
-  page?: string;
-};
+import { PageProps } from "@/.next/types/app/layout";
 
 // 每页显示数量
 const ITEMS_PER_PAGE = 10;
 
-export default async function HomePage({
-  searchParams,
-}: {
-  searchParams: SearchParams;
-}) {
+export default async function HomePage({ searchParams }: PageProps) {
   const _searchParams = await searchParams;
   const currentPage = Math.max(
     1,

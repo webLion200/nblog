@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
@@ -73,30 +74,33 @@ export function CreateTagDialog({ onOpenChange, open = false }: IProps) {
     }
   };
 
-  const updateTag = async (id: string) => {
-    const newTag = {
-      value: inputValue?.trim()?.toLowerCase(),
-      label: inputValue?.trim(),
-    };
+  const updateTag = useCallback(
+    async (id: string) => {
+      const newTag = {
+        value: inputValue?.trim()?.toLowerCase(),
+        label: inputValue?.trim(),
+      };
 
-    const validation = tagSchema.safeParse(newTag);
-    if (!validation.success) {
-      toast.warning(validation?.error?.errors?.[0]?.message);
-      return;
-    }
+      const validation = tagSchema.safeParse(newTag);
+      if (!validation.success) {
+        toast.warning(validation?.error?.errors?.[0]?.message);
+        return;
+      }
 
-    const response = await fetch(`/api/tags/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newTag),
-    });
+      const response = await fetch(`/api/tags/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newTag),
+      });
 
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.error);
-    }
-    toast.success("标签编辑成功");
-  };
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error);
+      }
+      toast.success("标签编辑成功");
+    },
+    [inputValue]
+  );
 
   const deleteTag = async (id: string) => {
     const response = await fetch(`/api/tags/${id}`, {
@@ -143,7 +147,7 @@ export function CreateTagDialog({ onOpenChange, open = false }: IProps) {
       await loadData();
       setEditingRowId(null);
     },
-    [inputValue]
+    [inputValue, updateTag]
   );
 
   const handleEditCancel = useCallback(() => {

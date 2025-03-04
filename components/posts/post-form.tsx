@@ -44,16 +44,6 @@ export default function PostForm({ defaultValues = {}, type = "new" }: Props) {
 
   const [isPending, startTransition] = useTransition();
 
-  useEffect(() => {
-    if (defaultValues?.tags) {
-      setSelectedTags(defaultValues.tags);
-    }
-    if (defaultValues?.categoryId) {
-      setSelectedCategoryId(defaultValues.categoryId || "");
-      form.setValue("categoryId", defaultValues.categoryId);
-    }
-  }, [defaultValues]);
-
   const form = useForm<PostSchemaValues>({
     resolver: zodResolver(postSchema),
     defaultValues: {
@@ -63,6 +53,16 @@ export default function PostForm({ defaultValues = {}, type = "new" }: Props) {
       categoryId: "",
     },
   });
+
+  useEffect(() => {
+    if (defaultValues?.tags) {
+      setSelectedTags(defaultValues.tags);
+    }
+    if (defaultValues?.categoryId) {
+      setSelectedCategoryId(defaultValues.categoryId || "");
+      form.setValue("categoryId", defaultValues.categoryId);
+    }
+  }, [defaultValues, form]);
 
   const onSubmit = async (
     data: PostSchemaValues,
