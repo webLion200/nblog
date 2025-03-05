@@ -13,7 +13,7 @@ export default async function PostDetail({
 
   return (
     <div className="flex-1">
-      <div className=" text-3xl font-bold text-white">{post.title}</div>
+      <h1 className=" text-3xl font-bold text-white">{post.title}</h1>
       <div className="pt-8">
         <Editor defaultValue={post.content} editable={false} />
       </div>
