@@ -58,9 +58,17 @@
     padding: 0 1rem;
     margin: 1.25rem 1rem 1.25rem 0.4rem;
 
-    li p {
-      margin-top: 0.25em;
-      margin-bottom: 0.25em;
+    li {
+      padding-left: 6px;
+      p {
+        margin-top: 0.25em;
+        margin-bottom: 0.25em;
+      }
+
+      &::marker {
+        color: #999;
+        font-size: 0.8rem;
+      }
     }
   }
 
@@ -199,10 +207,10 @@
   /* Table-specific styling */
   table {
     border-collapse: collapse;
-    margin: 0;
     overflow: hidden;
     table-layout: fixed;
     width: 100%;
+    margin: 1.5rem 0 !important;
 
     td,
     th {
@@ -248,7 +256,7 @@
   }
 
   .tableWrapper {
-    margin: 1.5rem 0;
+    /* margin: 1.5rem 0; */
     overflow-x: auto;
   }
 
