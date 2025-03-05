@@ -1,4 +1,4 @@
-import { Extensions } from "@tiptap/react";
+import { Extensions, mergeAttributes } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import ImageResize from "tiptap-extension-resize-image";
 import Placeholder from "@tiptap/extension-placeholder";
@@ -10,6 +10,7 @@ import { Markdown } from "tiptap-markdown";
 import TaskItem from "@tiptap/extension-task-item";
 import Highlight from "@tiptap/extension-highlight";
 import TaskList from "@tiptap/extension-task-list";
+import Image from "@tiptap/extension-image";
 // import CodeBlock from "@tiptap/extension-code-block";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import { all, createLowlight } from "lowlight";
@@ -23,6 +24,25 @@ lowlight.register("html", html);
 lowlight.register("css", css);
 lowlight.register("js", js);
 lowlight.register("ts", ts);
+
+const CustomImage = Image.extend({
+  addAttributes() {
+    return {
+      ...this.parent?.(),
+      referrerpolicy: {
+        default: "no-referrer",
+      },
+    };
+  },
+  renderHTML({ node, HTMLAttributes }) {
+    return [
+      "img",
+      mergeAttributes(this.options.HTMLAttributes, HTMLAttributes, {
+        referrerpolicy: "no-referrer", // 强制添加 referrerpolicy
+      }),
+    ];
+  },
+});
 
 export const defaultExtensions: Extensions = [
   StarterKit.configure({
@@ -66,6 +86,7 @@ export const defaultExtensions: Extensions = [
     gapcursor: false,
   }),
   ImageResize,
+  CustomImage,
   SlashCommand,
   TiptapUnderline,
   TextStyle,
@@ -115,5 +136,6 @@ export const defaultExtensions: Extensions = [
     breaks: true, // 转换换行符为 <br>
     linkify: true, // 自动转换 URL 为链接
     transformPastedText: true, // 转换粘贴的文本
+    transformCopiedText: true, // 转换复制的文本
   }),
 ];
