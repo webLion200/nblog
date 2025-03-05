@@ -30,7 +30,6 @@ export const columns: ColumnDef<Category>[] = [
     header: "目录名称",
     enableHiding: false,
     cell: ({ getValue, row, column: { id }, table }) => {
-      debugger;
       const initialValue = getValue();
       // We need to keep and update the state of the cell normally
       const [value, setValue] = React.useState(initialValue);

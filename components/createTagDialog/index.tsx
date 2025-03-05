@@ -106,7 +106,6 @@ export function CreateTagDialog({ onOpenChange, open = false }: IProps) {
     const response = await fetch(`/api/tags/${id}`, {
       method: "DELETE",
     });
-    debugger;
     if (!response.ok) {
       const error = await response.json();
       throw new Error(error.error);
