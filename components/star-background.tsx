@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, memo } from "react";
 
 class Star {
   x: number;
@@ -194,4 +194,4 @@ const StarBackground = () => {
   return <canvas ref={canvasRef} className="fixed top-0 left-0 -z-0" />;
 };
 
-export default StarBackground;
+export default memo(StarBackground);
