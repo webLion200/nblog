@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
+import { Suspense } from "react";
+import GlobalLoading from "@/components/GlobalLoading";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,7 +30,7 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <Suspense fallback={<GlobalLoading />}>{children}</Suspense>
         <Toaster position="top-center" />
       </body>
     </html>

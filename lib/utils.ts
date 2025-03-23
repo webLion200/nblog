@@ -26,3 +26,37 @@ export async function extractSummary(
     ? textContent.slice(0, length) + "..."
     : textContent;
 }
+
+interface IPost {
+  id: string;
+  title: string;
+  createTime?: Date;
+}
+
+interface ICategory {
+  id: string;
+  name: string;
+  posts: IPost[];
+}
+
+export type PostTreeNode = {
+  id: string;
+  title: string;
+  type: "folder" | "file";
+  createdAt?: Date;
+  children?: PostTreeNode[];
+};
+
+export function buildPostTree(categories: ICategory[]): PostTreeNode[] {
+  return categories.map((category) => ({
+    id: category.id,
+    title: category.name,
+    type: "folder",
+    children: category.posts.map((post) => ({
+      id: post.id,
+      title: post.title,
+      type: "file",
+      createdAt: post.createTime,
+    })),
+  }));
+}
