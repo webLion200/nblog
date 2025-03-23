@@ -52,7 +52,7 @@ export default async function PostDetail({
   if (!post) return <p>文章未找到</p>;
 
   return (
-    <article className="prose max-w-4xl mx-auto">
+    <article className="prose mx-auto">
       <h1 className=" text-3xl font-bold text-white">{post.title}</h1>
       <div className="pt-8">
         <Editor defaultValue={post.content} editable={false} />
