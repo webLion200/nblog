@@ -13,7 +13,7 @@ export default async function MainLayout({
 
   return (
     <SessionProvider value={session}>
-      <StarBackground />
+      <StarBackground className="-z-100" />
       <div className="container mx-auto">
         <MainHeader />
         <div>{children}</div>

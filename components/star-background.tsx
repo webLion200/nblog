@@ -1,6 +1,10 @@
 "use client";
 import { useEffect, useRef, memo } from "react";
 
+interface StarBackgroundProps {
+  className?: string;
+}
+
 class Star {
   x: number;
   y: number;
@@ -104,7 +108,7 @@ class Heart {
   }
 }
 
-const StarBackground = () => {
+const StarBackground = ({ className }: StarBackgroundProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const stars = useRef<Star[]>([]);
   const trails = useRef<Trail[]>([]);
@@ -191,7 +195,12 @@ const StarBackground = () => {
 
   useEffect(initCanvas, []);
 
-  return <canvas ref={canvasRef} className="fixed top-0 left-0 -z-0" />;
+  return (
+    <canvas
+      ref={canvasRef}
+      className={`fixed top-0 left-0 -z-0 ${className}`}
+    />
+  );
 };
 
 export default memo(StarBackground);
